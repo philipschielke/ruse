@@ -72,19 +72,19 @@
     -->
        <target name="-pre-compile"  >
  
-        <!-- Propriedades -->
+        <!-- Properties -->
         <property name="antlr.jar" location="Libs/antlr.jar"/>
         <property name="antlr.grammar" location="ruse.g4"/>
         <property name="antlr.parserdir" location="src/ruse"/>
  
-        <!-- Cria o subdiretório parser -->
+        <!-- Parser subdir -->
         <mkdir dir="${antlr.parserdir}"/>
  
-        <echo level="info">Criando Classes ANTLR</echo>
-        <!-- Gera os arquivos -->
+        <echo level="info">Creating ANTLR Classes</echo>
+        <!-- Generate files -->
         <java classname="org.antlr.v4.Tool"  fork="true">
             <arg line="-o ${antlr.parserdir}"/>
-            <!-- Cria tb as casses para padrão Visitor -->
+            <!-- Create classes for visitor pattern -->
             <arg line="-no-listener -visitor"/>
             <arg value="${antlr.grammar}"/>
             <classpath path="${antlr.jar}"/>

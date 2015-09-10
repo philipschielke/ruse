@@ -17,7 +17,7 @@ public class RUSESymbol extends Object{
     private final String text;
     
     public RUSESymbol(String t) {
-        text = t.substring(1, t.length());
+        text = t;
     }
     
     public String getText() { return text; }

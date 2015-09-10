@@ -88,7 +88,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
         for ( TerminalNode t : ctx.ID()) {
             formals.add(t.getText());
         }
-        Function result = new Function(null, formals, ctx.expr());
+        Function result = new Function(null, formals, ctx.expr(), false);
         // if this lambda is being returned from a function or other
         // local context, bind that contexts symbol table to the lambda
         // to capture any bound variables.
@@ -106,7 +106,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
         for ( TerminalNode t : ctx.ID().subList(1, ctx.ID().size())) {
             formals.add(t.getText());
         }
-        Function result = new Function(name, formals, ctx.expr());
+        Function result = new Function(name, formals, ctx.expr(), false);
         globSymTab.enter(name, result);
         return result;
     }
@@ -118,7 +118,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
         for ( TerminalNode t : ctx.ID().subList(1, ctx.ID().size())) {
             formals.add(t.getText());
         }
-        Function result = new Function(name, formals, ctx.expr());
+        Function result = new Function(name, formals, ctx.expr(), true);
         globSymTab.enter(name, result);
         return result;
     }
@@ -287,12 +287,12 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
         }
         return null;
     }
-    
+    /*
     @Override
     public Object visitSymbol(ruseParser.SymbolContext ctx) {
         return (RUSESymbol) new RUSESymbol(ctx.SYMBOL().getText()); 
     }
-    
+    */
     
     @Override
     public Object visitLet(ruseParser.LetContext ctx) {
@@ -304,7 +304,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
             actuals.add(visit(binding.expr()));
         }
         
-        Function temp = new Function(null, formals, ctx.expr());
+        Function temp = new Function(null, formals, ctx.expr(), false);
         
         // Create a new local symbol table for this pseudo-function invocation
         if (callStack.empty()) temp.createLocalSymTab(actuals, globSymTab);
@@ -322,7 +322,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
     }
     
     @Override
-    public Object visitEmpty(ruseParser.EmptyContext ctx) {
+    public Object visitEmptyQ(ruseParser.EmptyQContext ctx) {
         Object test = visit(ctx.expr());
         if (test instanceof EmptyList)
             return true;
@@ -331,7 +331,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
     }
     
     @Override
-    public Object visitZero(ruseParser.ZeroContext ctx) {
+    public Object visitZeroQ(ruseParser.ZeroQContext ctx) {
         Object test = visit(ctx.expr());
         if ((test instanceof Integer) && ((Integer)test == 0))
             return true;
@@ -351,7 +351,8 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
     
     @Override
     public Object visitEvaluate(ruseParser.EvaluateContext ctx) {
-        Pair code = (Pair) visit(ctx.expr());
+        //Pair code = (Pair) visit(ctx.expr());
+        Object code = visit(ctx.expr());
         String codes = code.toString();
         ANTLRInputStream input = new ANTLRInputStream(codes+"\n");
         ruseLexer lexer = new ruseLexer(input);
@@ -389,7 +390,49 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
         Object lhs = visit(ctx.e2);
         return rhs.equals(lhs);
     }
+/*    
+    public Object quoteHelper(ParseTree p)
+    {
+        if (p.getChild(0) == ruseParser.LPAREN) return null;
+        if (p.getChild(0) == ruseParser.INT) return visit(p);
+        if (p.getChild(0) == ruserParser.STRING) return visit(p);
+        if p.
+            ctx.e.getRuleContext() instanceof ruseParser.StringContext)
+            return visit(ctx.e);
+        if (ctx.e.getRuleContext() instanceof ruseParser.JustIDContext)
+            return (RUSESymbol) new RUSESymbol(ctx.e.getText()); 
+    }
+  */  
+    @Override
+    public Object visitQuote(ruseParser.QuoteContext ctx) {
+        return visit(ctx.e);
+    }
     
+    @Override
+    public Object visitQuoteInt(ruseParser.QuoteIntContext ctx)
+    {
+        return Integer.valueOf(ctx.INT().getText());
+    }
+    @Override
+    public Object visitQuoteString(ruseParser.QuoteStringContext ctx)
+    {
+        return ctx.STRING().getText();
+    }
+    @Override
+    public Object visitQuoteID(ruseParser.QuoteIDContext ctx)
+    {
+        return (RUSESymbol) new RUSESymbol(ctx.ID().getText()); 
+    }
+    @Override
+    public Object visitQuoteList(ruseParser.QuoteListContext ctx)
+    {
+        Object result = EmptyList.getInstance();
+        for (int i = ctx.quoteexpr().size() - 1; i >= 0; i--) {
+            Object l = visit(ctx.quoteexpr(i));
+            result = new Pair(l,result);
+        }
+        return result;
+    }
     @Override
     public Object visitDisplayln(ruseParser.DisplaylnContext ctx) {
         Object todisplay = visit(ctx.expr());

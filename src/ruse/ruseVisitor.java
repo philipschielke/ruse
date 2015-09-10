@@ -15,6 +15,13 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by the {@code ZeroQ}
+	 * labeled alternative in {@link ruseParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitZeroQ(@NotNull ruseParser.ZeroQContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Displayln}
 	 * labeled alternative in {@link ruseParser#expr}.
 	 * @param ctx the parse tree
@@ -43,6 +50,13 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThan(@NotNull ruseParser.LessThanContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code QuoteInt}
+	 * labeled alternative in {@link ruseParser#quoteexpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQuoteInt(@NotNull ruseParser.QuoteIntContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code MinusInt}
 	 * labeled alternative in {@link ruseParser#expr}.
 	 * @param ctx the parse tree
@@ -50,19 +64,12 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMinusInt(@NotNull ruseParser.MinusIntContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Zero}
-	 * labeled alternative in {@link ruseParser#expr}.
+	 * Visit a parse tree produced by the {@code QuoteID}
+	 * labeled alternative in {@link ruseParser#quoteexpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitZero(@NotNull ruseParser.ZeroContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Empty}
-	 * labeled alternative in {@link ruseParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEmpty(@NotNull ruseParser.EmptyContext ctx);
+	T visitQuoteID(@NotNull ruseParser.QuoteIDContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ruseParser#lambda}.
 	 * @param ctx the parse tree
@@ -98,6 +105,13 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSimpleMinus(@NotNull ruseParser.SimpleMinusContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code OtherExpr}
+	 * labeled alternative in {@link ruseParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOtherExpr(@NotNull ruseParser.OtherExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code JustID}
 	 * labeled alternative in {@link ruseParser#expr}.
 	 * @param ctx the parse tree
@@ -112,12 +126,26 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCond(@NotNull ruseParser.CondContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Quote}
+	 * labeled alternative in {@link ruseParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQuote(@NotNull ruseParser.QuoteContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code GreaterThan}
 	 * labeled alternative in {@link ruseParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitGreaterThan(@NotNull ruseParser.GreaterThanContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code QuoteList}
+	 * labeled alternative in {@link ruseParser#quoteexpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQuoteList(@NotNull ruseParser.QuoteListContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Apply}
 	 * labeled alternative in {@link ruseParser#expr}.
@@ -161,6 +189,13 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEqualQ(@NotNull ruseParser.EqualQContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code EmptyQ}
+	 * labeled alternative in {@link ruseParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyQ(@NotNull ruseParser.EmptyQContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ruseParser#letbinding}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -181,6 +216,20 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSimpleTimes(@NotNull ruseParser.SimpleTimesContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code QuoteString}
+	 * labeled alternative in {@link ruseParser#quoteexpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQuoteString(@NotNull ruseParser.QuoteStringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code QuoteMinusInt}
+	 * labeled alternative in {@link ruseParser#quoteexpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQuoteMinusInt(@NotNull ruseParser.QuoteMinusIntContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code FuncCall}
 	 * labeled alternative in {@link ruseParser#expr}.
 	 * @param ctx the parse tree
@@ -188,19 +237,19 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncCall(@NotNull ruseParser.FuncCallContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Evaluate}
-	 * labeled alternative in {@link ruseParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEvaluate(@NotNull ruseParser.EvaluateContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ListQ}
 	 * labeled alternative in {@link ruseParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitListQ(@NotNull ruseParser.ListQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Evaluate}
+	 * labeled alternative in {@link ruseParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEvaluate(@NotNull ruseParser.EvaluateContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code DefFunc}
 	 * labeled alternative in {@link ruseParser#define}.
@@ -250,13 +299,6 @@ public interface ruseVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIfThenElse(@NotNull ruseParser.IfThenElseContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Symbol}
-	 * labeled alternative in {@link ruseParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSymbol(@NotNull ruseParser.SymbolContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code String}
 	 * labeled alternative in {@link ruseParser#expr}.

@@ -33,10 +33,10 @@ expr
     |    LPAREN LET LPAREN ( letbinding )* RPAREN expr RPAREN   # Let
     |    lambda                                                 # LambdaMatch
     |    LPAREN COND ( LPAREN t=expr v=expr RPAREN )+ RPAREN    # Cond
-    |    SYMBOL                                                 # Symbol
+//    |    SYMBOL                                                 # Symbol
     |    ELIST                                                  # EList
-    |    LPAREN ZERO expr RPAREN                                # Zero
-    |    LPAREN EMPTY expr RPAREN                               # Empty
+    |    LPAREN ZEROQ expr RPAREN                               # ZeroQ
+    |    LPAREN EMPTYQ expr RPAREN                              # EmptyQ
     |    LPAREN LISTQ expr RPAREN                               # ListQ
     |    LPAREN EVAL expr RPAREN                                # Evaluate
     |    LPAREN APPLY f=expr l=expr RPAREN                      # Apply
@@ -44,6 +44,16 @@ expr
     |    LPAREN SETBANG ID expr RPAREN                          # SetBang
     |    LPAREN DSPLYLN expr RPAREN                             # Displayln
     |    LPAREN LOAD STRING RPAREN                              # Load
+    |    LPAREN (expr)* RPAREN                                  # OtherExpr
+    |    QUOTE e=quoteexpr                                      # Quote
+    ;
+
+quoteexpr
+    : INT                                                       #QuoteInt
+    | ID                                                        #QuoteID
+    | STRING                                                    #QuoteString
+    | MINUS INT                                                 #QuoteMinusInt
+    | LPAREN (quoteexpr)* RPAREN                                #QuoteList
     ;
 
 define
@@ -93,8 +103,8 @@ FALSE: '#f';
 LIST: 'list';
 COND: 'cond';
 LET: 'let';
-EMPTY: 'empty?';
-ZERO: 'zero?';
+EMPTYQ: 'empty?';
+ZEROQ: 'zero?';
 LISTQ: 'list?';
 EVAL: 'eval';
 APPLY: 'apply';
@@ -105,6 +115,6 @@ EQQ: 'eq?';
 EQUALQ: 'equal?';
 DSPLYLN: 'displayln';
 LOAD: 'load';
-ID :    ([A-Z]|'_'|[a-z]|[0-9])+;  // Identifiers
-SYMBOL: '\''LEADING(LEADING|[0-9])*;
-LEADING: [A-Z]|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'-'|'_'|[a-z]|'+'|'*'|'/';
+ID: LEADING(LEADING|[0-9])*; // These are really scheme "symbols".
+QUOTE: '\'';
+LEADING: [A-Z]|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'-'|'_'|[a-z]|'+'|'*'|'/'|'<'|'>';

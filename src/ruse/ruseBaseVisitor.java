@@ -21,6 +21,13 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitZeroQ(@NotNull ruseParser.ZeroQContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitDisplayln(@NotNull ruseParser.DisplaylnContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -49,6 +56,13 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitQuoteInt(@NotNull ruseParser.QuoteIntContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitMinusInt(@NotNull ruseParser.MinusIntContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -56,14 +70,7 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitZero(@NotNull ruseParser.ZeroContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitEmpty(@NotNull ruseParser.EmptyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitQuoteID(@NotNull ruseParser.QuoteIDContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -105,6 +112,13 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitOtherExpr(@NotNull ruseParser.OtherExprContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitJustID(@NotNull ruseParser.JustIDContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -119,7 +133,21 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitQuote(@NotNull ruseParser.QuoteContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitGreaterThan(@NotNull ruseParser.GreaterThanContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitQuoteList(@NotNull ruseParser.QuoteListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -168,6 +196,13 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitEmptyQ(@NotNull ruseParser.EmptyQContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitLetbinding(@NotNull ruseParser.LetbindingContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -189,6 +224,20 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitQuoteString(@NotNull ruseParser.QuoteStringContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitQuoteMinusInt(@NotNull ruseParser.QuoteMinusIntContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitFuncCall(@NotNull ruseParser.FuncCallContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -196,14 +245,14 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEvaluate(@NotNull ruseParser.EvaluateContext ctx) { return visitChildren(ctx); }
+	@Override public T visitListQ(@NotNull ruseParser.ListQContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitListQ(@NotNull ruseParser.ListQContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEvaluate(@NotNull ruseParser.EvaluateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -253,13 +302,6 @@ public class ruseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements r
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitIfThenElse(@NotNull ruseParser.IfThenElseContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitSymbol(@NotNull ruseParser.SymbolContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
