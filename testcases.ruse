@@ -1,0 +1,125 @@
+; Global count of number of tests run.
+(define testnum 0)
+
+; This is avery basic test harness.  It just compares two expressions for equality
+; on failure it reports an error.  It also increments the global testnum variable
+(define (test expected expr) (let ((x (set! testnum (+ testnum 1)))) (cond ((equal? expected expr) (displayln (cons "Pass" testnum))) ((= 0 0) (displayln (list "ERROR" testnum expected expr))))))
+
+(define a 5)
+(define (foo a) (let ((b 3)) (+ a b)))
+(define (foo2 a) (let ((a 2) (b a)) b))
+(define (foo3 x) (x 8))
+(define (bar x) (x 3 4))
+(define (baz c) (let ((b c)) (let ((c 2)) (+ b c))))
+(define (func) (lambda (x) (* x x)))
+(define (fact x) (cond ((= x 0) 1) ((= 0 0) (* x (fact (- x 1))))))
+(define curryf (lambda (x) (lambda (y) (list x y))))
+(define (curryf2 x) (lambda (y) (list x y)))
+(define (foo4) (let ((x 1)) (lambda (y) (list x y))))
+(define (add3 a b c) (+ a (+ b c)))
+(define (square x) (* x x))
+(define four (lambda (x) (lambda (y) (lambda (z) (lambda (w) (list x y z w))))))
+(define (sumlist l) (cond ((empty? l) 0) ((= 0 0) (+ (car l) (sumlist (cdr l))))))
+(define (reverse l) (cond ((empty? l) '()) ((empty? (cdr l)) l) ((= 0 0) (cons (reverse (cdr l)) (car l)) )))
+; test subtraction
+(test 7 (- 19 12))
+; test unary minus
+(test -4 (- 6 10))
+; test multiplication
+(test 21 (* 3 7))
+; test multiplication of negatives
+(test -40 (* -8 5))
+; test division
+(test 2 (/ 8 4))
+; test division of negatives
+(test -2 (/ 8 -4))
+; test if, condition is false
+(test 5 (if (= 4 3) 6 5))
+; test if, condition is true
+(test 'a (if (= 3 3) 'a 5))
+; test < and empty set
+(test '() (if (< 4 3) 6 '()))
+; test >
+(test 5 (if (> 4 3) 5 -4))
+; test car and cons
+(test 'a (car (cons 'a 'b)))
+; test cdr and cons
+(test 'b (cdr (cons 'a 'b)))
+; test car and list
+(test 'a (car (list 'a 'b 'c 'd)))
+; test cdr and list and terminating empty list
+(test '() (cdr (list 'a)))
+; test that list and the corresponding cons do the same thing
+(test (list 'a 'b) (cons 'a (list 'b)))
+; Test simple function call and cond
+(test 1 (fact 0))
+; Test simple recursive function call
+(test 1 (fact 1))
+; Test simple recursive function call
+(test 24 (fact 4))
+; Test override of parameter with let
+(test 5 (foo 2))
+; Test let sequencing
+(test 7 (foo2 7))
+; Test list with no parameters
+(test '() (list))
+; Test list and atoms
+(test (cons 'a (cons 'b (cons 'c '()))) (list 'a 'b 'c))
+; Test car with a list of atoms
+(test 'a (car (list 'a 'b 'c)))
+; Test cdr with a list of atoms
+(test (list 'b 'c) (cdr (list 'a 'b 'c)))
+; Test passing a nameless function to another function as a parameter
+(test 64 (foo3 (lambda (y) (* y y))))
+; (test -8 (foo3 (lambda (z) (- z)))) No minus with one operand
+; Pass a two argument lambda to another function
+(test 7 (bar (lambda (a b) (+ a b))))
+; Pass a slightly more complicated two argument lambda to another function
+(test 21 (bar (lambda (a b) (* a (+ a b)))))
+; This passed lambda gets applied to 8 by foo 3
+(test (cons 8 '()) (foo3 (lambda (z) (list z))))
+; Testing of passing a lambda function with lets to another function
+(test 9 (foo3 (lambda (g) (let ((h g) (g 1)) (+ h g)))))
+; Test nested lets
+(test 10 (baz 8))
+; Test passing a function with nested lets to another function
+(test 10 (foo3 baz))
+; func
+; (func)
+; Func is a function with no arguments returning a function.  Apply that result to 2
+(test 4 ((func) 2))
+; Curry test
+(test (list 1 2) ((curryf 1) 2))
+; curry test
+(test (list 1 2) ((curryf2 1) 2))
+; foo4 returns a lambda expression with 1 bound variable.
+(test (list 1 19) ((foo4) 19))
+; Test of eval (note that + is not a first-class function in RUSE, so
+; we create a wrapper function to do the add.
+(test 21 (eval (list 'add3 4 8 9)))
+; Testing eval with a lambda as the function
+(test 81 ((eval (list 'lambda (list 'x) (list 'square 'x))) 9))
+; Result of eval combined with a another operator
+(test 29 (+ 4 (eval (list 'square 5))))
+; Test of apply
+(test 25 (apply square (list 5)))
+; Test of apply with currying
+(test 11 (apply add3 (cons 6 (eval (list (list 'curryf2 1) 4)))))
+; Multiple nested lambda expression
+(test (list 1 2 3 4) ((((four 1) 2) 3) 4))
+; test zero?
+(test (= 0 0) (zero? 0))
+; test zero?
+(test (= 0 1) (zero? 8))
+; test zero?
+(test (= 0 1) (zero? (list 0)))
+; test empty?
+(test (= 0 0) (empty? (cdr (list 4))))
+; test empty?
+(test (= 0 0) (empty? '()))
+; test empty?
+(test (= 0 1) (empty? (cdr (cons 4 5))))
+; test empty?
+(test (= 0 1) (empty? (cdr (list 4 5))))
+; recursive function with lists using cold
+(test 44 (sumlist (list 1 2 3 4 5 6 7 8 9 -1)))
