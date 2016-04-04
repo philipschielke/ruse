@@ -117,4 +117,4 @@ DSPLYLN: 'displayln';
 LOAD: 'load';
 ID: LEADING(LEADING|[0-9])*; // These are really scheme "symbols".
 QUOTE: '\'';
-LEADING: [A-Z]|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'-'|'_'|[a-z]|'+'|'*'|'/'|'<'|'>';
+LEADING: [A-Z]|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'_'|[a-z]|'+'|'*'|'/'|'<'|'>';
