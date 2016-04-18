@@ -30,11 +30,14 @@ work roughly like they would in Racket.
 * car, cdr, cons,
 * +, -, \*, / (two arguments only)
 * <, >, =
-* if, cond, or, and not,
-* define, set!, let
+* if, cond, or, and, not,
+* define, set!, let, lambda
 * cons, car, cdr, list
 * empty? zero? list?
 * eval, apply, '
+* display, displayln
+* load
+  * (load "filename")
 
 ###Things that I would like to work that don't (or kind of work):
 *eval* - eval is implemented but simply takes its input and runs the input string 
@@ -55,6 +58,9 @@ main language features being implemented as syntactic forms and not symbols
 that are mapped to code in some symbol table.  (see below)
 
 ### Significant differences from other Scheme variants:
+
+* define is only allowed at the top level.  No local defines are allowed.
+
 * Syntactic forms.  RUSE operators such as arithmetic operators,
 logical operators, conditional operators, and other built-in primitives
 are implemented as part of the *syntax* of the RUSE language.  In other variants
@@ -64,15 +70,15 @@ R5RS they cannot be remapped by default, but in Racket they can.  So, for
 example, (define + -) is allowed in Racket.)  The intent of this interpreter
 is as a first interpreter in an intro programming languages class, so this
 approach was taken in order to allow the students to see the syntax directly
-in the grammar.
-Note, that this difference affects constructs such as '.  '(+ 3 4) which is
-perfectly legal in Racket, since + is a symbol.  This is not legal in the
-supplied RUSE interpreter since + is part of the syntax of the language.  This
-also makes accepting something like (map + '(1 2) '(3 4))
+in the grammar.  This also makes accepting something like (map + '(1 2) '(3 4))
 very challenging in RUSE.
 I have had students successfully implement map, even using the builtin 
 syntactic operators.
 
+* quote ' does not allow syntatic forms to be quote.  For example, '(+ 3 4) is
+perfectly legal in Racke, since + is a symbol not syntax.  This is not legal in the
+supplied RUSE interpreter since + is part of the syntax of the language. No,
+syntatic forms can be quoted, e.g. 'lambda, 'define, etc.
 
 *Copyright Information*
 
