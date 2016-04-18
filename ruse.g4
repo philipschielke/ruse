@@ -6,6 +6,7 @@ import java.util.*;
 }
 
 eval:    expr NEWLINE                                           # SExpr
+    |   NEWLINE                                                 # Blank
     |   define                                                  # Def
     ;
 
@@ -26,14 +27,12 @@ expr
     |    LPAREN OR e1=expr e2=expr RPAREN                       # Or
     |    LPAREN NOT expr RPAREN                                 # Not
     |    INT                                                    # Int
-    |    MINUS INT                                              # MinusInt
     |    STRING                                                 # String
     |    LPAREN f=expr (expr)* RPAREN                           # FuncCall
     |    ID                                                     # JustID
     |    LPAREN LET LPAREN ( letbinding )* RPAREN expr RPAREN   # Let
     |    lambda                                                 # LambdaMatch
     |    LPAREN COND ( LPAREN t=expr v=expr RPAREN )+ RPAREN    # Cond
-//    |    SYMBOL                                                 # Symbol
     |    ELIST                                                  # EList
     |    LPAREN ZEROQ expr RPAREN                               # ZeroQ
     |    LPAREN EMPTYQ expr RPAREN                              # EmptyQ
@@ -43,6 +42,7 @@ expr
     |    LPAREN EQUALQ e1=expr e2=expr RPAREN                   # EqualQ
     |    LPAREN SETBANG ID expr RPAREN                          # SetBang
     |    LPAREN DSPLYLN expr RPAREN                             # Displayln
+    |    LPAREN DSPLY expr RPAREN                               # Display
     |    LPAREN LOAD STRING RPAREN                              # Load
     |    LPAREN (expr)* RPAREN                                  # OtherExpr
     |    QUOTE e=quoteexpr                                      # Quote
@@ -52,7 +52,6 @@ quoteexpr
     : INT                                                       #QuoteInt
     | ID                                                        #QuoteID
     | STRING                                                    #QuoteString
-    | MINUS INT                                                 #QuoteMinusInt
     | LPAREN (quoteexpr)* RPAREN                                #QuoteList
     ;
 
@@ -75,7 +74,7 @@ letbinding
 
 WS  :   [ \t]+ -> skip ; // toss out whitespace
 COMMENT: ';' ~[\r\n]* '\r'? '\n' -> skip;
-INT :   [0-9]+ ;         // Integer literals
+INT :   ('+'|'-')?[0-9]+ ;         // Integer literals
 DOT :   '.';
 FLOAT : [0-9]*'.'[0-9]+; // Floating point literals
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)
@@ -114,7 +113,8 @@ SETBANG: 'set!';
 EQQ: 'eq?';
 EQUALQ: 'equal?';
 DSPLYLN: 'displayln';
+DSPLY: 'display';
 LOAD: 'load';
 ID: LEADING(LEADING|[0-9])*; // These are really scheme "symbols".
 QUOTE: '\'';
-LEADING: [A-Z]|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'_'|[a-z]|'+'|'*'|'/'|'<'|'>';
+LEADING: [A-Z]|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'_'|[a-z]|'+'|'-'|'*'|'/'|'<'|'>';
