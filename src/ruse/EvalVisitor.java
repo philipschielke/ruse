@@ -39,7 +39,15 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
         return result;
     }
     
-    
+    // Racket treats any value other than #f as true
+    // The function takes in an object and if that object
+    // is a Boolean it simply returns it.  Otherwise
+    // it returns Boolean true
+    private Boolean evalRacketBoolean(Object conditional)
+    {
+        if (conditional instanceof Boolean) return (Boolean) conditional;
+        else return (Boolean) true;
+    }
     @Override
     public Object visitJustID(ruseParser.JustIDContext ctx) {
         String id = ctx.ID().getText();
@@ -183,21 +191,21 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
  // Logical operators
     @Override
     public Object visitAnd(ruseParser.AndContext ctx) {
-        Boolean v1 = (Boolean) visit(ctx.expr(0));
-        Boolean v2 = (Boolean) visit(ctx.expr(1));
+        Boolean v1 = evalRacketBoolean(visit(ctx.expr(0)));
+        Boolean v2 = evalRacketBoolean(visit(ctx.expr(1)));
         return (Boolean) (v1 && v2);
     }
     
     @Override
     public Object visitOr(ruseParser.OrContext ctx) {
-        Boolean v1 = (Boolean) visit(ctx.expr(0));
-        Boolean v2 = (Boolean) visit(ctx.expr(1));
+        Boolean v1 = evalRacketBoolean(visit(ctx.expr(0)));
+        Boolean v2 = evalRacketBoolean(visit(ctx.expr(1)));
         return (Boolean) (v1 || v2);
     }
     
     @Override
     public Object visitNot(ruseParser.NotContext ctx) {
-        Boolean v1 = (Boolean) visit(ctx.expr());
+        Boolean v1 = evalRacketBoolean(visit(ctx.expr()));
         return !v1;
     }
 
@@ -236,7 +244,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
     
     @Override
     public Object visitIfThenElse(ruseParser.IfThenElseContext ctx) {
-        Boolean condition = (Boolean) visit(ctx.cond);
+        Boolean condition = evalRacketBoolean(visit(ctx.cond));
         Object  thenResult = visit(ctx.thenpart);
         Object  elseResult = visit(ctx.elsepart);
         
@@ -248,12 +256,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
     public Object visitInt(ruseParser.IntContext ctx) {
         return Integer.valueOf(ctx.INT().getText());
     }
-    
-    @Override
-    public Object visitMinusInt(ruseParser.MinusIntContext ctx) {
-        return -Integer.valueOf(ctx.INT().getText());
-    }
-    
+        
     @Override
     public Object visitString(ruseParser.StringContext ctx) {
         return (String) (ctx.STRING().getText());
@@ -273,7 +276,7 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
         else if (result instanceof RUSEvoid)
             System.out.println("");
         else
-            System.out.println(visit(ctx.expr()));
+            System.out.println(result);
         return 0;
     }
     
@@ -281,19 +284,13 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
     public Object visitCond(ruseParser.CondContext ctx) {
       
         for ( int i = 0; i < ctx.expr().size(); i+=2) {
-            Boolean t = (Boolean) visit(ctx.expr(i));
+            Boolean t = evalRacketBoolean(visit(ctx.expr(i)));
             //Object v = visit(ctx.expr(i+1));
             if (t == true) return visit(ctx.expr(i+1));
         }
         return null;
     }
-    /*
-    @Override
-    public Object visitSymbol(ruseParser.SymbolContext ctx) {
-        return (RUSESymbol) new RUSESymbol(ctx.SYMBOL().getText()); 
-    }
-    */
-    
+        
     @Override
     public Object visitLet(ruseParser.LetContext ctx) {
          ArrayList<String> formals = new ArrayList<>();
@@ -435,6 +432,13 @@ public class EvalVisitor extends ruseBaseVisitor<Object>{
     }
     @Override
     public Object visitDisplayln(ruseParser.DisplaylnContext ctx) {
+        Object todisplay = visit(ctx.expr());
+        System.out.println(todisplay.toString());
+        return RUSEvoid.getInstance();
+    }
+    
+    @Override
+    public Object visitDisplay(ruseParser.DisplayContext ctx) {
         Object todisplay = visit(ctx.expr());
         System.out.print(todisplay.toString());
         return RUSEvoid.getInstance();
