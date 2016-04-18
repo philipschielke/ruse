@@ -2,7 +2,7 @@
 ##Introduction
 RUSE (RedUced SchemE) is a Scheme-like language loosely based on Scheme and Racket.  This
 code implements a simple RUSE interpreter built on [ANTLR](http://antlr.org) and Java.  The project is intended
-to be used as a programming in an introductory Programming Languages Course.  It gives students
+to be used as a programming project in an introductory Programming Languages Course.  It gives students
 an opportunity to implement language features for a language with a simple syntax within
 a parser generator system.  See the pdf file included in the repository for some sample student exercises.
 
@@ -10,10 +10,10 @@ a parser generator system.  See the pdf file included in the repository for some
 ###Use
 This repository is a NetBeans
 project.  After you clone the repository, simply "open" the project in NetBeans by
-selecting "Open Project" and point NetBeans at the cloned direcoty.  Then
+selecting "Open Project" and point NetBeans at the cloned directory.  Then
 do a Clean and Build, and finally run the project.
 
-To build from the command line you must have ant installed.  To build from the command
+To build from the command line you must have ant installed (as well as the jdk.)  To build from the command
 line enter the cloned directory and type:
 
      ant -f /Users/phil/ruse -Dnb.internal.action.name=rebuild clean jar
@@ -38,6 +38,12 @@ work roughly like they would in Racket.
 * display, displayln
 * load
   * (load "filename")
+
+###Unit tests
+The file testcases.ruse includes a simple test harness and
+a set of (incomplete) unit tests.  To run, simply do a
+(load "testcases.ruse") from the interpreter.  All testcases
+should pass with the unmodified interpreter.
 
 ###Things that I would like to work that don't (or kind of work):
 *eval* - eval is implemented but simply takes its input and runs the input string 
