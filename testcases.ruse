@@ -21,6 +21,8 @@
 (define four (lambda (x) (lambda (y) (lambda (z) (lambda (w) (list x y z w))))))
 (define (sumlist l) (cond ((empty? l) 0) ((= 0 0) (+ (car l) (sumlist (cdr l))))))
 (define (reverse l) (cond ((empty? l) '()) ((empty? (cdr l)) l) ((= 0 0) (cons (reverse (cdr l)) (car l)) )))
+(define (restof a . b) (+ a (car b)))
+(define (restof2 . x) x)
 ; SUB - test subtraction
 (test "SUB" 7 (- 19 12))
 ; UMINUS - test unary minus
@@ -125,3 +127,9 @@
 (test "EMPTY?4" (= 0 1) (empty? (cdr (list 4 5))))
 ; SUMLIST - recursive function with lists using cond
 (test "SUMLIST" 44 (sumlist (list 1 2 3 4 5 6 7 8 9 -1)))
+; RESTOF1 - use function that requires 1 arg and any number of args after that
+(test "RESTOF1" 5 (restof 2 3 4 5))
+; RESTOF2 - use function that requires 1 arg and any number of args after that
+(test "RESTOF2" 17 (restof 13 4))
+; RESTOF3 - use function that requires 1 arg and any number of args after that
+(test "RESTOF3" (list 1 2 3) (restof2 1 2 3))
