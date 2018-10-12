@@ -98,8 +98,8 @@ very challenging in RUSE.
 I have had students successfully implement map, even using the builtin 
 syntactic operators.
 
-* quote ' does not allow syntatic forms to be quote.  For example, '(+ 3 4) is
-perfectly legal in Racke, since + is a symbol not syntax.  This is not legal in the
+* quote ' does not allow syntatic forms to be quoted.  For example, '(+ 3 4) is
+perfectly legal in Racket, since + is a symbol not syntax.  This is not legal in the
 supplied RUSE interpreter since + is part of the syntax of the language. No,
 syntatic forms can be quoted, e.g. 'lambda, 'define, etc.
 
